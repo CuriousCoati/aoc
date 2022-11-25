@@ -2,16 +2,16 @@ package de.breyer.aoc.y2021;
 
 public class Line {
 
-    private final Point start;
-    private final Point end;
+    private final Point2D start;
+    private final Point2D end;
 
     public Line(String line) {
         String[] points = line.split(" -> ");
         String[] startPoint = points[0].split(",");
         String[] endPoint = points[1].split(",");
 
-        start = new Point(Integer.parseInt(startPoint[0]), Integer.parseInt(startPoint[1]));
-        end = new Point(Integer.parseInt(endPoint[0]), Integer.parseInt(endPoint[1]));
+        start = new Point2D(Integer.parseInt(startPoint[0]), Integer.parseInt(startPoint[1]));
+        end = new Point2D(Integer.parseInt(endPoint[0]), Integer.parseInt(endPoint[1]));
     }
 
     public boolean isStraight() {
@@ -25,7 +25,7 @@ public class Line {
         int compareY = Integer.compare(end.getY(), start.getY());
 
         do {
-            markOnMap(map, new Point(x, y));
+            markOnMap(map, new Point2D(x, y));
             if (compareX != 0) {
                 x = compareX > 0 ? x + 1 : x - 1;
             }
@@ -36,7 +36,7 @@ public class Line {
         markOnMap(map, end);
     }
 
-    private void markOnMap(int[][] map, Point point) {
+    private void markOnMap(int[][] map, Point2D point) {
         try {
             int count = map[point.getX()][point.getY()];
             map[point.getX()][point.getY()] = count + 1;

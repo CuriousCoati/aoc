@@ -44,7 +44,7 @@ public class D11 extends AbstractAocPuzzle {
     private void startSimulation() {
         for (int step = 0; step < STEP_COUNT; step++) {
 
-            List<Point> flashedOctopuses = new ArrayList<>();
+            List<Point2D> flashedOctopuses = new ArrayList<>();
 
             for (int y = 0; y < 10; y++) {
                 for (int x = 0; x < 10; x++) {
@@ -59,7 +59,7 @@ public class D11 extends AbstractAocPuzzle {
                 break;
             }
 
-            for (Point flashedOctopus : flashedOctopuses) {
+            for (Point2D flashedOctopus : flashedOctopuses) {
                 octopuses[flashedOctopus.getY()][flashedOctopus.getX()] = 0;
             }
 
@@ -69,18 +69,18 @@ public class D11 extends AbstractAocPuzzle {
         }
     }
 
-    private void processOctopus(int x, int y, List<Point> flashedOctopuses) {
+    private void processOctopus(int x, int y, List<Point2D> flashedOctopuses) {
         int value = octopuses[y][x];
         value++;
 
         octopuses[y][x] = value;
         if (value == 10) {
-            flashedOctopuses.add(new Point(x, y));
+            flashedOctopuses.add(new Point2D(x, y));
             increaseNeighbours(x, y, flashedOctopuses);
         }
     }
 
-    private void increaseNeighbours(int x, int y, List<Point> flashedOctopuses) {
+    private void increaseNeighbours(int x, int y, List<Point2D> flashedOctopuses) {
         for (int y2 = y-1; y2 <= y+1; y2++) {
             if (y2 >= 0 && y2 <= 9) {
                 for (int x2 = x-1; x2 <= x+1; x2++) {

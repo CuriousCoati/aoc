@@ -9,7 +9,7 @@ import java.util.List;
 
 public abstract class AbstractAocPuzzle {
 
-    protected final List<String> lines;
+    protected List<String> lines;
 
     protected AbstractAocPuzzle() {
         lines = new ArrayList<>();
@@ -27,17 +27,14 @@ public abstract class AbstractAocPuzzle {
 
     private void readInputs() {
         String name = getClass().getAnnotation(AocPuzzle.class).value().replace('_', '/');
-        readInput(lines, name + "/input");
+        readInput(name + "/input");
     }
 
-    private void readInput(List<String> list, String resource) {
+    private void readInput(String resource) {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resource)) {
             if (null != inputStream) {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        list.add(line);
-                    }
+                    lines = reader.lines().toList();
                 }
             }
         } catch (IOException e) {
