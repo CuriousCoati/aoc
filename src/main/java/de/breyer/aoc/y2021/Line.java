@@ -1,5 +1,7 @@
 package de.breyer.aoc.y2021;
 
+import de.breyer.aoc.data.Point2D;
+
 public class Line {
 
     private final Point2D start;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import de.breyer.aoc.AbstractAocPuzzle;
 import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.data.Point2D;
 
 @AocPuzzle("2021_11")
 public class D11 extends AbstractAocPuzzle {
