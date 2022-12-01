@@ -12,12 +12,12 @@ public class D01 extends AbstractAocPuzzle {
 
     @Override
     protected void partOne() {
-        List<Elf> elves = procssInput();
+        procssInput();
         elves.sort((a, b) -> Integer.compare(b.calcTotalCarlories(), a.calcTotalCarlories()));
         System.out.println("most calories: " + elves.get(0).calcTotalCarlories());
     }
 
-    private List<Elf> procssInput() {
+    private void procssInput() {
         Elf elf = new Elf();
         elves.add(elf);
         for (String line : lines) {
@@ -28,8 +28,6 @@ public class D01 extends AbstractAocPuzzle {
                 elf.addCalorieItem(Integer.parseInt(line));
             }
         }
-
-        return elves;
     }
 
     @Override
