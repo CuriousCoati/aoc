@@ -32,7 +32,7 @@ public class D03 extends AbstractAocPuzzle {
     }
 
     private int getPriority(char character) {
-        return Character.isUpperCase(character) ? Character.toLowerCase(character) - 70 : Character.toUpperCase(character) - 64;
+        return Character.isUpperCase(character) ? character - 38 : character - 96;
     }
 
     @Override
