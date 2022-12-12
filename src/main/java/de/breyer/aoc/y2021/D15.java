@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import de.breyer.aoc.AbstractAocPuzzle;
 import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.data.Node;
 
 @AocPuzzle("2021_15")
 public class D15 extends AbstractAocPuzzle {

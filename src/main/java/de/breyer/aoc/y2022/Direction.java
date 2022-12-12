@@ -5,9 +5,9 @@ import java.util.function.BiFunction;
 public enum Direction {
 
     UP((x, i) -> x, (y, i) -> y - i),
-    RIGHT((x, i) -> x + 1, (y, i) -> y),
+    RIGHT((x, i) -> x + i, (y, i) -> y),
     DOWN((x, i) -> x, (y, i) -> y + i),
-    LEFT((x, i) -> x - 1, (y, i) -> y);
+    LEFT((x, i) -> x - i, (y, i) -> y);
 
     private final BiFunction<Integer, Integer, Integer> xExpression;
     private final BiFunction<Integer, Integer, Integer> yExpression;

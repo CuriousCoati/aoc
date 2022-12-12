@@ -1,4 +1,4 @@
-package de.breyer.aoc.y2021;
+package de.breyer.aoc.data;
 
 public class Node {
 
@@ -7,10 +7,10 @@ public class Node {
     }
 
     private Node predecessor;
-    private int x;
-    private int y;
-    private String name;
-    private int value;
+    private final int x;
+    private final int y;
+    private final String name;
+    private final int value;
     private int cost;
     private int priority;
 
