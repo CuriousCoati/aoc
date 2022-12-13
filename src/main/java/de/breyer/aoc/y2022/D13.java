@@ -166,7 +166,7 @@ public class D13 extends AbstractAocPuzzle {
         int indexDividerTwo = packages.indexOf(dividerTwo) + 1;
         int decoderKey = indexDividerOne * indexDividerTwo;
 
-        System.out.println("sum of indices: " + decoderKey);
+        System.out.println("decoder key: " + decoderKey);
     }
 
 }
