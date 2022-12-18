@@ -4,9 +4,21 @@ import java.util.Objects;
 
 public class Point3D {
 
-    private int x;
-    private int y;
-    private int z;
+    private final int x;
+    private final int y;
+    private final int z;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getZ() {
+        return z;
+    }
 
     public Point3D(int x, int y, int z) {
         this.x = x;
