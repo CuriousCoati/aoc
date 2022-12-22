@@ -10,12 +10,6 @@ public enum Direction {
     LEFT((x, i) -> x - i, (y, i) -> y);
 
     private final BiFunction<Integer, Integer, Integer> xExpression;
-    private final BiFunction<Integer, Integer, Integer> yExpression;
-
-    Direction(BiFunction<Integer, Integer, Integer> xExpression, BiFunction<Integer, Integer, Integer> yExpression) {
-        this.xExpression = xExpression;
-        this.yExpression = yExpression;
-    }
 
     public static Direction valueOf(char character) {
         return switch (character) {
@@ -24,6 +18,22 @@ public enum Direction {
             case 'L' -> LEFT;
             case 'R' -> RIGHT;
             default -> throw new IllegalStateException("Unexpected value: " + character);
+        };
+    }
+
+    private final BiFunction<Integer, Integer, Integer> yExpression;
+
+    Direction(BiFunction<Integer, Integer, Integer> xExpression, BiFunction<Integer, Integer, Integer> yExpression) {
+        this.xExpression = xExpression;
+        this.yExpression = yExpression;
+    }
+
+    public static Direction turn(Direction currentDirection, char rotation) {
+        return switch (currentDirection) {
+            case UP -> 'R' == rotation ? Direction.RIGHT : Direction.LEFT;
+            case RIGHT -> 'R' == rotation ? Direction.DOWN : Direction.UP;
+            case DOWN -> 'R' == rotation ? Direction.LEFT : Direction.RIGHT;
+            case LEFT -> 'R' == rotation ? Direction.UP : Direction.DOWN;
         };
     }
 
