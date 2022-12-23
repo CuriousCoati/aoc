@@ -9,7 +9,6 @@ public enum Direction {
     DOWN((x, i) -> x, (y, i) -> y + i),
     LEFT((x, i) -> x - i, (y, i) -> y);
 
-    private final BiFunction<Integer, Integer, Integer> xExpression;
 
     public static Direction valueOf(char character) {
         return switch (character) {
@@ -21,13 +20,6 @@ public enum Direction {
         };
     }
 
-    private final BiFunction<Integer, Integer, Integer> yExpression;
-
-    Direction(BiFunction<Integer, Integer, Integer> xExpression, BiFunction<Integer, Integer, Integer> yExpression) {
-        this.xExpression = xExpression;
-        this.yExpression = yExpression;
-    }
-
     public static Direction turn(Direction currentDirection, char rotation) {
         return switch (currentDirection) {
             case UP -> 'R' == rotation ? Direction.RIGHT : Direction.LEFT;
@@ -37,11 +29,19 @@ public enum Direction {
         };
     }
 
+    private final BiFunction<Integer, Integer, Integer> xExpression;
+    private final BiFunction<Integer, Integer, Integer> yExpression;
+
     public BiFunction<Integer, Integer, Integer> getXExpression() {
         return xExpression;
     }
 
     public BiFunction<Integer, Integer, Integer> getYExpression() {
         return yExpression;
+    }
+
+    Direction(BiFunction<Integer, Integer, Integer> xExpression, BiFunction<Integer, Integer, Integer> yExpression) {
+        this.xExpression = xExpression;
+        this.yExpression = yExpression;
     }
 }
