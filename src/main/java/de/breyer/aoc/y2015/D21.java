@@ -118,11 +118,11 @@ public class D21 extends AbstractAocPuzzle {
             armor += item.armor();
         }
 
-        return new Pair<>(new RpgCharacter(100, damage, armor), cost);
+        return new Pair<>(new RpgCharacter(100, damage, armor, 0), cost);
     }
 
     private RpgCharacter createBoss() {
-        return new RpgCharacter(103, 9, 2);
+        return new RpgCharacter(103, 9, 2, 0);
     }
 
     private boolean simulateFight(RpgCharacter player) {
