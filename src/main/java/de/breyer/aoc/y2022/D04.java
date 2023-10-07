@@ -1,8 +1,8 @@
 package de.breyer.aoc.y2022;
 
 import java.util.function.BiFunction;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 
 @AocPuzzle("2022_04")
 public class D04 extends AbstractAocPuzzle {

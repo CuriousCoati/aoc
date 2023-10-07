@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 
 @AocPuzzle("2021_07")
 public class D07 extends AbstractAocPuzzle {

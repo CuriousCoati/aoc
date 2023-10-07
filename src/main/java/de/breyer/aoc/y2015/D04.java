@@ -3,8 +3,8 @@ package de.breyer.aoc.y2015;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 
 @AocPuzzle("2015_04")
 public class D04 extends AbstractAocPuzzle {

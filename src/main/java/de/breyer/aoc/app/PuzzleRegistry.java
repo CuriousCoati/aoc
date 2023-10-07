@@ -1,4 +1,4 @@
-package de.breyer.aoc;
+package de.breyer.aoc.app;
 
 import java.util.HashMap;
 import java.util.Set;

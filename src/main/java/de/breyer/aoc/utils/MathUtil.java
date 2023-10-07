@@ -1,4 +1,4 @@
-package de.breyer.aoc;
+package de.breyer.aoc.utils;
 
 import de.breyer.aoc.data.Point2D;
 

@@ -3,8 +3,6 @@ package de.breyer.aoc.y2021;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
 
 public class Cave {
 

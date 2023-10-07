@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 
 @AocPuzzle("2015_09")
 public class D09 extends AbstractAocPuzzle {

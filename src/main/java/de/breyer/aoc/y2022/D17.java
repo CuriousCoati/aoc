@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 import de.breyer.aoc.data.LongCoordinate2D;
 
 @AocPuzzle("2022_17")
@@ -96,15 +96,15 @@ public class D17 extends AbstractAocPuzzle {
         boolean canMove = true;
 
         for (LongCoordinate2D coordinate : rockCoordinates) {
-            long newX = coordinate.getX() + change;
-            if (newX < 0 || newX > 6 || filledPositions.contains(new LongCoordinate2D(newX, coordinate.getY()))) {
+            long newX = coordinate.x() + change;
+            if (newX < 0 || newX > 6 || filledPositions.contains(new LongCoordinate2D(newX, coordinate.y()))) {
                 canMove = false;
                 break;
             }
         }
 
         if (canMove) {
-            position = new LongCoordinate2D(position.getX() + change, position.getY());
+            position = new LongCoordinate2D(position.x() + change, position.y());
         }
 
         return position;
@@ -115,15 +115,15 @@ public class D17 extends AbstractAocPuzzle {
         boolean canMove = true;
 
         for (LongCoordinate2D coordinate : rockCoordinates) {
-            long newY = coordinate.getY() - 1;
-            if (newY < 0 || filledPositions.contains(new LongCoordinate2D(coordinate.getX(), newY))) {
+            long newY = coordinate.y() - 1;
+            if (newY < 0 || filledPositions.contains(new LongCoordinate2D(coordinate.x(), newY))) {
                 canMove = false;
                 break;
             }
         }
 
         if (canMove) {
-            position = new LongCoordinate2D(position.getX(), position.getY() - 1);
+            position = new LongCoordinate2D(position.x(), position.y() - 1);
         }
 
         return position;
@@ -134,31 +134,31 @@ public class D17 extends AbstractAocPuzzle {
 
         if (rockType == RockType.MINUS) {
             coordinates.add(position);
-            coordinates.add(new LongCoordinate2D(position.getX() + 1, position.getY()));
-            coordinates.add(new LongCoordinate2D(position.getX() + 2, position.getY()));
-            coordinates.add(new LongCoordinate2D(position.getX() + 3, position.getY()));
+            coordinates.add(new LongCoordinate2D(position.x() + 1, position.y()));
+            coordinates.add(new LongCoordinate2D(position.x() + 2, position.y()));
+            coordinates.add(new LongCoordinate2D(position.x() + 3, position.y()));
         } else if (rockType == RockType.PLUS) {
-            coordinates.add(new LongCoordinate2D(position.getX() + 1, position.getY()));
-            coordinates.add(new LongCoordinate2D(position.getX(), position.getY() + 1));
-            coordinates.add(new LongCoordinate2D(position.getX() + 1, position.getY() + 1));
-            coordinates.add(new LongCoordinate2D(position.getX() + 2, position.getY() + 1));
-            coordinates.add(new LongCoordinate2D(position.getX() + 1, position.getY() + 2));
+            coordinates.add(new LongCoordinate2D(position.x() + 1, position.y()));
+            coordinates.add(new LongCoordinate2D(position.x(), position.y() + 1));
+            coordinates.add(new LongCoordinate2D(position.x() + 1, position.y() + 1));
+            coordinates.add(new LongCoordinate2D(position.x() + 2, position.y() + 1));
+            coordinates.add(new LongCoordinate2D(position.x() + 1, position.y() + 2));
         } else if (rockType == RockType.CORNER) {
             coordinates.add(position);
-            coordinates.add(new LongCoordinate2D(position.getX() + 1, position.getY()));
-            coordinates.add(new LongCoordinate2D(position.getX() + 2, position.getY()));
-            coordinates.add(new LongCoordinate2D(position.getX() + 2, position.getY() + 1));
-            coordinates.add(new LongCoordinate2D(position.getX() + 2, position.getY() + 2));
+            coordinates.add(new LongCoordinate2D(position.x() + 1, position.y()));
+            coordinates.add(new LongCoordinate2D(position.x() + 2, position.y()));
+            coordinates.add(new LongCoordinate2D(position.x() + 2, position.y() + 1));
+            coordinates.add(new LongCoordinate2D(position.x() + 2, position.y() + 2));
         } else if (rockType == RockType.COLUMN) {
             coordinates.add(position);
-            coordinates.add(new LongCoordinate2D(position.getX(), position.getY() + 1));
-            coordinates.add(new LongCoordinate2D(position.getX(), position.getY() + 2));
-            coordinates.add(new LongCoordinate2D(position.getX(), position.getY() + 3));
+            coordinates.add(new LongCoordinate2D(position.x(), position.y() + 1));
+            coordinates.add(new LongCoordinate2D(position.x(), position.y() + 2));
+            coordinates.add(new LongCoordinate2D(position.x(), position.y() + 3));
         } else if (rockType == RockType.SQUARE) {
             coordinates.add(position);
-            coordinates.add(new LongCoordinate2D(position.getX() + 1, position.getY()));
-            coordinates.add(new LongCoordinate2D(position.getX(), position.getY() + 1));
-            coordinates.add(new LongCoordinate2D(position.getX() + 1, position.getY() + 1));
+            coordinates.add(new LongCoordinate2D(position.x() + 1, position.y()));
+            coordinates.add(new LongCoordinate2D(position.x(), position.y() + 1));
+            coordinates.add(new LongCoordinate2D(position.x() + 1, position.y() + 1));
         }
 
         return coordinates;
@@ -169,12 +169,12 @@ public class D17 extends AbstractAocPuzzle {
         for (LongCoordinate2D coordinate : rockCoordinates) {
             filledPositions.add(coordinate);
 
-            if (surfaces[(int) coordinate.getX()] < coordinate.getY()) {
-                surfaces[(int) coordinate.getX()] = coordinate.getY();
+            if (surfaces[(int) coordinate.x()] < coordinate.y()) {
+                surfaces[(int) coordinate.x()] = coordinate.y();
             }
 
-            if (coordinate.getY() > highestY) {
-                highestY = coordinate.getY();
+            if (coordinate.y() > highestY) {
+                highestY = coordinate.y();
             }
         }
     }
@@ -214,7 +214,7 @@ public class D17 extends AbstractAocPuzzle {
 
             List<LongCoordinate2D> newPositions = new ArrayList<>();
             for (LongCoordinate2D coordinate : filledPositions) {
-                newPositions.add(new LongCoordinate2D(coordinate.getX(), coordinate.getY() + heightIncrease));
+                newPositions.add(new LongCoordinate2D(coordinate.x(), coordinate.y() + heightIncrease));
             }
             filledPositions = newPositions;
 

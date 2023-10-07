@@ -1,4 +1,4 @@
-package de.breyer.aoc;
+package de.breyer.aoc.app;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package de.breyer.aoc;
+package de.breyer.aoc.function;
 
 @FunctionalInterface
 public interface TriConsumer<A, B, C> {

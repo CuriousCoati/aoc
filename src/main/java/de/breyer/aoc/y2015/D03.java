@@ -1,8 +1,8 @@
 package de.breyer.aoc.y2015;
 
 import java.util.HashMap;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 import de.breyer.aoc.data.Point2D;
 
 @AocPuzzle("2015_03")

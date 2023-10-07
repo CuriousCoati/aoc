@@ -2,8 +2,8 @@ package de.breyer.aoc.y2022;
 
 import java.util.HashSet;
 import java.util.Set;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 
 @AocPuzzle("2022_06")
 public class D06 extends AbstractAocPuzzle {

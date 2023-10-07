@@ -1,8 +1,8 @@
 package de.breyer.aoc.y2015;
 
 import java.util.List;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 
 @AocPuzzle("2015_11")
 public class D11 extends AbstractAocPuzzle {

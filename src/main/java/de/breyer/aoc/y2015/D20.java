@@ -2,8 +2,8 @@ package de.breyer.aoc.y2015;
 
 import java.util.HashMap;
 import java.util.function.BiPredicate;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 
 @AocPuzzle("2015_20")
 public class D20 extends AbstractAocPuzzle {

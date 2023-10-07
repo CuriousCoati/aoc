@@ -3,8 +3,8 @@ package de.breyer.aoc.y2021;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 
 @AocPuzzle("2021_14")
 public class D14 extends AbstractAocPuzzle {

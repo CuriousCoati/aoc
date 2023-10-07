@@ -1,4 +1,4 @@
-package de.breyer.aoc;
+package de.breyer.aoc.app;
 
 import java.io.BufferedReader;
 import java.io.IOException;

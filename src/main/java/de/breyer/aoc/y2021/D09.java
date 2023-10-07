@@ -3,8 +3,8 @@ package de.breyer.aoc.y2021;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 
 @AocPuzzle("2021_09")
 public class D09 extends AbstractAocPuzzle {

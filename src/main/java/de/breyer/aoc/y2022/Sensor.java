@@ -1,6 +1,6 @@
 package de.breyer.aoc.y2022;
 
-import de.breyer.aoc.MathUtil;
+import de.breyer.aoc.utils.MathUtil;
 import de.breyer.aoc.data.Point2D;
 
 public class Sensor {

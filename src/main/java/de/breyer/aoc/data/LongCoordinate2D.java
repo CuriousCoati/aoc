@@ -2,23 +2,7 @@ package de.breyer.aoc.data;
 
 import java.util.Objects;
 
-public class LongCoordinate2D {
-
-    private final long x;
-    private final long y;
-
-    public LongCoordinate2D(long x, long y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public long getX() {
-        return this.x;
-    }
-
-    public long getY() {
-        return this.y;
-    }
+public record LongCoordinate2D(long x, long y) {
 
     @Override
     public boolean equals(Object o) {

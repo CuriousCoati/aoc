@@ -1,7 +1,7 @@
 package de.breyer.aoc.y2021;
 
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
 
 @AocPuzzle("2021_05")
 public class D05 extends AbstractAocPuzzle {

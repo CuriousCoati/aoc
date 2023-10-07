@@ -3,9 +3,9 @@ package de.breyer.aoc.y2022;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import de.breyer.aoc.AbstractAocPuzzle;
-import de.breyer.aoc.AocPuzzle;
-import de.breyer.aoc.TriConsumer;
+import de.breyer.aoc.app.AbstractAocPuzzle;
+import de.breyer.aoc.app.AocPuzzle;
+import de.breyer.aoc.function.TriConsumer;
 
 @AocPuzzle("2022_05")
 public class D05 extends AbstractAocPuzzle {
