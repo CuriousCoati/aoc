@@ -41,4 +41,15 @@ public class Point2D {
     public String toString() {
         return "Point2D{x=" + x + ", y=" + y + '}';
     }
+
+    public boolean isNeighbour(Point2D other) {
+        for (int x = this.x - 1; x <= this.x + 1; x++) {
+            for (int y = this.y - 1; y <= this.y + 1; y++) {
+                if (x == other.x && y == other.y && (x != this.x || y != this.y)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
