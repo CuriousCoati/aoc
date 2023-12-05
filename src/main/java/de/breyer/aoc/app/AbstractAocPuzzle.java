@@ -19,10 +19,16 @@ public abstract class AbstractAocPuzzle {
         readInputs();
         System.out.println();
         System.out.println("Part One: ");
+        var start = System.currentTimeMillis();
         partOne();
+        var end = System.currentTimeMillis();
+        System.out.println("time: " + (end - start) + " ms");
         System.out.println();
         System.out.println("Part Two: ");
+        start = System.currentTimeMillis();
         partTwo();
+        end = System.currentTimeMillis();
+        System.out.println("time: " + (end - start) + " ms");
     }
 
     private void readInputs() {
