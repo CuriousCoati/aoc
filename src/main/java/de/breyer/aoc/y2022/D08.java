@@ -25,10 +25,8 @@ public class D08 extends AbstractAocPuzzle {
     @Override
     protected void partOne() {
         parseInput();
-        long start = System.currentTimeMillis();
         Set<String> visibleTrees = findVisibleTrees();
-        long end = System.currentTimeMillis();
-        System.out.println("visible trees: " + visibleTrees.size() + " (" + (end - start) + "ms)");
+        System.out.println("visible trees: " + visibleTrees.size());
     }
 
     private void parseInput() {
@@ -103,10 +101,8 @@ public class D08 extends AbstractAocPuzzle {
 
     @Override
     protected void partTwo() {
-        long start = System.currentTimeMillis();
         int highestScenicScore = rateTrees();
-        long end = System.currentTimeMillis();
-        System.out.println("highest scenic score: " + highestScenicScore + " (" + (end - start) + "ms)");
+        System.out.println("highest scenic score: " + highestScenicScore);
     }
 
     private int rateTrees() {
