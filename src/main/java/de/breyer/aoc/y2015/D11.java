@@ -7,14 +7,13 @@ import de.breyer.aoc.app.AocPuzzle;
 @AocPuzzle("2015_11")
 public class D11 extends AbstractAocPuzzle {
 
-    private static final String OLD_PASSWORD = "cqjxjnds";
     private static final List<Character> FORBIDDEN_CHARS = List.of('i', 'o', 'l');
 
     private char[] password;
 
     @Override
     protected void partOne() {
-        password = OLD_PASSWORD.toCharArray();
+        password = lines.get(0).toCharArray();
         calcNextPassword();
         System.out.println("new password: " + new String(password));
     }

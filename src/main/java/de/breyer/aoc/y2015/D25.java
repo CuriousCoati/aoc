@@ -6,8 +6,6 @@ import de.breyer.aoc.app.AocPuzzle;
 @AocPuzzle("2015_25")
 public class D25 extends AbstractAocPuzzle {
 
-    private static final int SEARCHED_ROW = 2978;
-    private static final int SEARCHED_COL = 3083;
     private static final int MAX_SIZE = 5000;
     private static final long START_VALUE = 20151125;
     private static final long MULTIPLICAND = 252533;
@@ -17,8 +15,11 @@ public class D25 extends AbstractAocPuzzle {
 
     @Override
     protected void partOne() {
+        var split = lines.get(0).split(" ");
+        var row = Integer.parseInt(split[16].replace(",", ""));
+        var col = Integer.parseInt(split[18].replace(".", ""));
         generateGrid();
-        var code = grid[SEARCHED_ROW - 1][SEARCHED_COL - 1];
+        var code = grid[row - 1][col - 1];
         System.out.println("Search code: " + code);
     }
 

@@ -6,15 +6,13 @@ import de.breyer.aoc.app.AocPuzzle;
 @AocPuzzle("2015_10")
 public class D10 extends AbstractAocPuzzle {
 
-    private static final String INPUT = "1113122113";
-
     @Override
     protected void partOne() {
-        String sequence = INPUT;
+        String sequence = lines.get(0);
         for (int i = 0; i < 40; i++) {
             sequence = processSequence(sequence);
         }
-        System.out.println("final sequence: " + sequence + " (" + sequence.length() + ")");
+        System.out.println("final sequence: " + sequence.length());
     }
 
     private String processSequence(String currentSequence) {
@@ -41,11 +39,11 @@ public class D10 extends AbstractAocPuzzle {
 
     @Override
     protected void partTwo() {
-        String sequence = INPUT;
+        String sequence = lines.get(0);
         for (int i = 0; i < 50; i++) {
             sequence = processSequence(sequence);
         }
-        System.out.println("final sequence: " + sequence + " (" + sequence.length() + ")");
+        System.out.println("final sequence length: " + sequence.length());
     }
 
 }

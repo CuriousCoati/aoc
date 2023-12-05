@@ -8,8 +8,6 @@ import de.breyer.aoc.app.AocPuzzle;
 @AocPuzzle("2015_20")
 public class D20 extends AbstractAocPuzzle {
 
-    private static final int TARGET = 34000000;
-
     @Override
     protected void partOne() {
         var lowestHouseNumber = findLowestHouseNumberToReachTwo(10, (i, j) -> i * j <= 786240);
@@ -39,7 +37,7 @@ public class D20 extends AbstractAocPuzzle {
 
             presents = cache.get(houseNumber);
             cache.remove(houseNumber);
-        } while (presents < TARGET);
+        } while (presents < Integer.parseInt(lines.get(0)));
 
         return houseNumber;
     }

@@ -122,7 +122,11 @@ public class D21 extends AbstractAocPuzzle {
     }
 
     private RpgCharacter createBoss() {
-        return new RpgCharacter(103, 9, 2, 0);
+        var hitPoints = Integer.parseInt(lines.get(0).split(": ")[1]);
+        var damage = Integer.parseInt(lines.get(1).split(": ")[1]);
+        var armor = Integer.parseInt(lines.get(2).split(": ")[1]);
+
+        return new RpgCharacter(hitPoints, damage, armor, 0);
     }
 
     private boolean simulateFight(RpgCharacter player) {

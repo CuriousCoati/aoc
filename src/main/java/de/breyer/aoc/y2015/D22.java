@@ -74,7 +74,10 @@ public class D22 extends AbstractAocPuzzle {
     }
 
     private RpgCharacter createBoss() {
-        return new RpgCharacter(51, 9, 0, 0);
+        var hitPoints = Integer.parseInt(lines.get(0).split(": ")[1]);
+        var damage = Integer.parseInt(lines.get(1).split(": ")[1]);
+
+        return new RpgCharacter(hitPoints, damage, 0, 0);
     }
 
     private Optional<FightState> bossTurn(FightState state) {
