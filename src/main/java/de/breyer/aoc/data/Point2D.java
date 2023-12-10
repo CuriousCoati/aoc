@@ -1,5 +1,7 @@
 package de.breyer.aoc.data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Point2D {
@@ -51,5 +53,17 @@ public class Point2D {
             }
         }
         return false;
+    }
+
+    public List<Point2D> getNeighbourCoordinates(boolean withDiagonals) {
+        var neighbourCoordinates = new ArrayList<Point2D>();
+        for (int x = this.x - 1; x <= this.x + 1; x++) {
+            for (int y = this.y - 1; y <= this.y + 1; y++) {
+                if ((withDiagonals && (x != this.x || y != this.y)) || (!withDiagonals && (x != this.x ^ y != this.y))) {
+                    neighbourCoordinates.add(new Point2D(x, y));
+                }
+            }
+        }
+        return neighbourCoordinates;
     }
 }
