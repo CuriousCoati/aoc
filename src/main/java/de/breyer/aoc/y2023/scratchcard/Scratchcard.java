@@ -1,4 +1,4 @@
-package de.breyer.aoc.y2023;
+package de.breyer.aoc.y2023.scratchcard;
 
 import java.util.ArrayList;
 import java.util.List;

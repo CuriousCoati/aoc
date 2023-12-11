@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import de.breyer.aoc.app.AbstractAocPuzzle;
 import de.breyer.aoc.app.AocPuzzle;
+import de.breyer.aoc.y2023.scratchcard.Scratchcard;
 
 @AocPuzzle("2023_04")
 public class D04 extends AbstractAocPuzzle {
