@@ -44,4 +44,14 @@ public enum Direction {
         this.xExpression = xExpression;
         this.yExpression = yExpression;
     }
+
+    @Override
+    public String toString() {
+        return switch (this) {
+            case UP -> "U";
+            case RIGHT -> "R";
+            case DOWN -> "D";
+            case LEFT -> "L";
+        };
+    }
 }
