@@ -29,6 +29,15 @@ public enum Direction {
         };
     }
 
+    public static boolean isOpposite(Direction currentDirection, Direction otherDirection) {
+        return switch (currentDirection) {
+            case UP -> otherDirection == Direction.DOWN;
+            case RIGHT -> otherDirection == Direction.LEFT;
+            case DOWN -> otherDirection == Direction.UP;
+            case LEFT -> otherDirection == Direction.RIGHT;
+        };
+    }
+
     private final BiFunction<Integer, Integer, Integer> xExpression;
     private final BiFunction<Integer, Integer, Integer> yExpression;
 
