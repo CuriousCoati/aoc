@@ -23,6 +23,6 @@ public record LongCoordinate2D(long x, long y) {
 
     @Override
     public String toString() {
-        return "LongCoordinate2D{x=" + x + ", y=" + y + '}';
+        return "[x=" + x + ", y=" + y + ']';
     }
 }
