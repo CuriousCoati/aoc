@@ -30,11 +30,15 @@ public enum Direction {
     }
 
     public static boolean isOpposite(Direction currentDirection, Direction otherDirection) {
+        return getOpposite(currentDirection) == otherDirection;
+    }
+
+    public static Direction getOpposite(Direction currentDirection) {
         return switch (currentDirection) {
-            case UP -> otherDirection == Direction.DOWN;
-            case RIGHT -> otherDirection == Direction.LEFT;
-            case DOWN -> otherDirection == Direction.UP;
-            case LEFT -> otherDirection == Direction.RIGHT;
+            case UP -> Direction.DOWN;
+            case RIGHT -> Direction.LEFT;
+            case DOWN -> Direction.UP;
+            case LEFT -> Direction.RIGHT;
         };
     }
 
