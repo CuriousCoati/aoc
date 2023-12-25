@@ -45,12 +45,12 @@ public class D18 extends AbstractAocPuzzle {
 
     private List<Point3D> getNeighbours(Point3D point) {
         List<Point3D> neighbours = new ArrayList<>();
-        neighbours.add(new Point3D(point.getX() - 1, point.getY(), point.getZ()));
-        neighbours.add(new Point3D(point.getX() + 1, point.getY(), point.getZ()));
-        neighbours.add(new Point3D(point.getX(), point.getY() - 1, point.getZ()));
-        neighbours.add(new Point3D(point.getX(), point.getY() + 1, point.getZ()));
-        neighbours.add(new Point3D(point.getX(), point.getY(), point.getZ() - 1));
-        neighbours.add(new Point3D(point.getX(), point.getY(), point.getZ() + 1));
+        neighbours.add(new Point3D(point.x() - 1, point.y(), point.z()));
+        neighbours.add(new Point3D(point.x() + 1, point.y(), point.z()));
+        neighbours.add(new Point3D(point.x(), point.y() - 1, point.z()));
+        neighbours.add(new Point3D(point.x(), point.y() + 1, point.z()));
+        neighbours.add(new Point3D(point.x(), point.y(), point.z() - 1));
+        neighbours.add(new Point3D(point.x(), point.y(), point.z() + 1));
         return neighbours;
     }
 
@@ -72,8 +72,8 @@ public class D18 extends AbstractAocPuzzle {
             List<Point3D> neighbours = getNeighbours(point);
 
             for (Point3D neighbour : neighbours) {
-                if (neighbour.getX() < -1 || neighbour.getX() > 20 || neighbour.getY() < -1 || neighbour.getY() > 20 || neighbour.getZ() < -1
-                        || neighbour.getZ() > 20) {
+                if (neighbour.x() < -1 || neighbour.x() > 20 || neighbour.y() < -1 || neighbour.y() > 20 || neighbour.z() < -1
+                        || neighbour.z() > 20) {
                     continue;
                 }
 

@@ -42,9 +42,9 @@ public class D22 extends AbstractAocPuzzle {
             hasMoved = false;
 
             for (var brick : bricks) {
-                if (brick.end.getZ() != 1 && brick.start.getZ() != 1) {
-                    var newStart = new Point3D(brick.start.getX(), brick.start.getY(), brick.start.getZ() - 1);
-                    var newEnd = new Point3D(brick.end.getX(), brick.end.getY(), brick.end.getZ() - 1);
+                if (brick.end.z() != 1 && brick.start.z() != 1) {
+                    var newStart = new Point3D(brick.start.x(), brick.start.y(), brick.start.z() - 1);
+                    var newEnd = new Point3D(brick.end.x(), brick.end.y(), brick.end.z() - 1);
                     var newBrick = new Brick(newStart, newEnd);
 
                     var canMove = true;
@@ -70,8 +70,8 @@ public class D22 extends AbstractAocPuzzle {
     private int countSafelyRemovableBricks() {
         for (var brick : bricks) {
             for (var other : bricks) {
-                var newStart = new Point3D(brick.start.getX(), brick.start.getY(), brick.start.getZ() + 1);
-                var newEnd = new Point3D(brick.end.getX(), brick.end.getY(), brick.end.getZ() + 1);
+                var newStart = new Point3D(brick.start.x(), brick.start.y(), brick.start.z() + 1);
+                var newEnd = new Point3D(brick.end.x(), brick.end.y(), brick.end.z() + 1);
                 var higherBrick = new Brick(newStart, newEnd);
 
                 if (brick != other && other.intersects(higherBrick)) {
@@ -136,9 +136,9 @@ public class D22 extends AbstractAocPuzzle {
         }
 
         public boolean intersects(Brick otherBrick) {
-            return otherBrick.start.getX() <= end.getX() && otherBrick.end.getX() >= start.getX() &&
-                    otherBrick.start.getY() <= end.getY() && otherBrick.end.getY() >= start.getY() &&
-                    otherBrick.start.getZ() <= end.getZ() && otherBrick.end.getZ() >= start.getZ();
+            return otherBrick.start.x() <= end.x() && otherBrick.end.x() >= start.x() &&
+                    otherBrick.start.y() <= end.y() && otherBrick.end.y() >= start.y() &&
+                    otherBrick.start.z() <= end.z() && otherBrick.end.z() >= start.z();
         }
     }
 
