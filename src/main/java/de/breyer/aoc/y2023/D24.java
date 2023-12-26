@@ -11,6 +11,7 @@ public class D24 extends AbstractAocPuzzle {
 
     private static final long MIN_TEST_AREA = 200000000000000L;
     private static final long MAX_TEST_AREA = 400000000000000L;
+    private static final int BRUTE_FORCE_RANGE = 300;
 
     @Override
     protected void partOne() {
@@ -72,25 +73,69 @@ public class D24 extends AbstractAocPuzzle {
     protected void partTwo() {
         var hailstones = parseInput();
         var position = findPositionToHitAllHailstones(hailstones);
-        System.out.println((position.x() * position.y() + position.z()) + " sum of initial position");
+        System.out.println("sum of position to hit all hailstones: " + (position.x() + position.y() + position.z()));
     }
 
-    private Point3D findPositionToHitAllHailstones(List<Hailstone> hailstones) {
-        var averagePosition = calculateAveragePoint(hailstones.stream().map(Hailstone::position).toList());
-        var averageVelocity = calculateAveragePoint(hailstones.stream().map(Hailstone::velocity).toList());
+    public Point3D findPositionToHitAllHailstones(List<Hailstone> hailstones) {
+        var a = hailstones.get(0);
+        var b = hailstones.get(1);
 
-        var k = 2;
-        var throwPosition = averagePosition.subtract(averageVelocity.multiply(k));
+        for (var vx = -BRUTE_FORCE_RANGE; vx <= BRUTE_FORCE_RANGE; vx++) {
+            for (var vy = -BRUTE_FORCE_RANGE; vy <= BRUTE_FORCE_RANGE; vy++) {
 
-        return new Point3D(0, 0, 0);
-    }
+                if (0 == vx || 0 == vy) {
+                    continue;
+                }
 
-    private Point3D calculateAveragePoint(List<Point3D> points) {
-        Point3D sum = new Point3D(0, 0, 0);
-        for (var point : points) {
-            sum = sum.add(point);
+                var cartesianProductVelocity = (a.velocity.x() - vx) * (b.velocity.y() - vy) - (a.velocity.y() - vy) * (b.velocity.x() - vx);
+                if (0 == b.velocity.x() - vx || 0 == cartesianProductVelocity) {
+                    continue;
+                }
+
+                var r = ((b.position.x() - a.position.x()) * (b.velocity.y() - vy) - (b.position.y() - a.position.y()) * (b.velocity.x() - vx))
+                        / (cartesianProductVelocity);
+
+                var x = a.position.x() + a.velocity.x() * r - vx * r;
+                var y = a.position.y() + a.velocity.y() * r - vy * r;
+
+                for (int vz = -BRUTE_FORCE_RANGE; vz <= BRUTE_FORCE_RANGE; vz++) {
+
+                    if (0 == vz) {
+                        continue;
+                    }
+
+                    var z = a.position.z() + a.velocity.z() * r - vz * r;
+                    var stone = new Hailstone(new Point3D(x, y, z), new Point3D(vx, vy, vz));
+
+                    var hitsSomeOtherStones = true;
+                    for (int i = 1; i < 5; i++) {
+                        var h = hailstones.get(i);
+                        long u;
+                        if (h.velocity.x() != vx) {
+                            u = (x - h.position.x()) / (h.velocity.x() - vx);
+                        } else if (h.velocity.y() != vy) {
+                            u = (y - h.position.y()) / (h.velocity.y() - vy);
+                        } else if (h.velocity.z() != vz) {
+                            u = (z - h.position.z()) / (h.velocity.z() - vz);
+                        } else {
+                            throw new RuntimeException("velocities are equal");
+                        }
+
+                        if ((x + u * vx != h.position.x() + u * h.velocity.x()) || (y + u * vy != h.position.y() + u * h.velocity.y()) || (z + u * vz
+                                != h.position.z() + u * h.velocity.z())) {
+                            hitsSomeOtherStones = false;
+                            break;
+                        }
+                    }
+
+                    if (hitsSomeOtherStones) {
+                        return new Point3D(x, y, z);
+                    }
+                }
+            }
         }
-        return sum.divide(points.size());
+
+        throw new RuntimeException("no position found to hit all hailstones");
     }
 
     private record Hailstone(Point3D position, Point3D velocity) {
