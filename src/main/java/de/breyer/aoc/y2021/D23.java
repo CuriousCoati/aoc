@@ -28,15 +28,15 @@ public class D23 extends AbstractAocPuzzle {
     }
 
     private void processInput(boolean fullDepth) {
+        var copy = new ArrayList<>(lines);
         if (fullDepth) {
-            lines = new ArrayList<>(lines);
-            lines.add(3, "  #D#C#B#A#  ");
-            lines.add(4, "  #D#B#A#C#  ");
+            copy.add(3, "  #D#C#B#A#  ");
+            copy.add(4, "  #D#B#A#C#  ");
         }
         initialGameState = new GameStateD23(fullDepth ? 4 : 2);
 
         int idx = 0;
-        for (String line : lines) {
+        for (String line : copy) {
             if (1 < idx && idx < 6) {
                 int room = 0;
                 for (char character : line.toCharArray()) {

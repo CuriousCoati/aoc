@@ -9,11 +9,9 @@ import java.util.List;
 
 public abstract class AbstractAocPuzzle {
 
-    protected List<String> lines;
-
-    protected AbstractAocPuzzle() {
-        lines = new ArrayList<>();
-    }
+    protected final List<String> lines = new ArrayList<>();
+    protected final List<String> testLinesPartOne = new ArrayList<>();
+    protected final List<String> testLinesPartTwo = new ArrayList<>();
 
     public void run() {
         readInputs();
@@ -33,14 +31,16 @@ public abstract class AbstractAocPuzzle {
 
     private void readInputs() {
         String name = getClass().getAnnotation(AocPuzzle.class).value().replace('_', '/');
-        readInput(name + "/input");
+        readInput(name + "/input", lines);
+        readInput(name + "/test_input_1", testLinesPartOne);
+        readInput(name + "/test_input_2", testLinesPartTwo);
     }
 
-    private void readInput(String resource) {
+    private void readInput(String resource, List<String> list) {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resource)) {
             if (null != inputStream) {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-                    lines = reader.lines().toList();
+                    list.addAll(reader.lines().toList());
                 }
             }
         } catch (IOException e) {
