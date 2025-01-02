@@ -3,6 +3,4 @@
 /.idea/
 /aoc.iml
 /.run/
-/src/main/resources/**/**/input
-/src/main/resources/**/**/test_input_1
-/src/main/resources/**/**/test_input_2
+/src/main/resources/**/**/*
