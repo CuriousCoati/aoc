@@ -37,6 +37,7 @@ public abstract class AbstractAocPuzzle {
     }
 
     private void readInput(String resource, List<String> list) {
+        list.clear();
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resource)) {
             if (null != inputStream) {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {

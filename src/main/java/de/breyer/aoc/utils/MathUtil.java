@@ -13,7 +13,7 @@ public class MathUtil {
         return Math.abs(xFirst - xSecond) + Math.abs(yFirst - ySecond);
     }
 
-    private static long calculateGCD(long a, long b) {
+    public static long calculateGCD(long a, long b) {
         if (b == 0) {
             return a;
         } else {
