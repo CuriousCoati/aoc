@@ -16,6 +16,11 @@ public class Point2D {
         this.y = y;
     }
 
+    public Point2D(String x, String y) {
+        this.x = Integer.parseInt(x);
+        this.y = Integer.parseInt(y);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
