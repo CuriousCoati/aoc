@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Safe</title>
+    <style>
+        :root {
+            --size: 360px;
+            --bg: #0f1724;
+            --card: #0b1220;
+            --accent: #ffd166;
+            --muted: #98a2b3;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            background: linear-gradient(180deg, #071024 0%, #081227 100%);
+            color: #e6eef8;
+            font-family: Inter, system-ui, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 920px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+        }
+
+        .dial-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px
+        }
+
+        .dial {
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 20%, #111827 0%, #0b1220 45%, #020617 100%);
+            display: grid;
+            place-items: center;
+            position: relative;
+            user-select: none
+        }
+
+        .dial .ring {
+            width: 86%;
+            height: 86%;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: conic-gradient(from 0deg, #061427, #081425);
+            transform: translateZ(0)
+        }
+
+        .indicator {
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7)
+        }
+
+        .hub {
+            width: 34%;
+            height: 34%;
+            border-radius: 50%;
+            background: linear-gradient(180deg, #0b1220, #071428);
+            display: grid;
+            place-items: center;
+            box-shadow: inset 0 6px 18px rgba(0, 0, 0, 0.6)
+        }
+
+        .display {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--accent);
+            font-family: monospace
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: inherit;
+            cursor: pointer
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 85vh;
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: transparent;
+            color: inherit
+        }
+
+        textarea#rotations {
+            height: 96%;
+            resize: none;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px
+        }
+
+        @media (max-width: 900px) {
+            .wrap {
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="card">
+        <div id="rotation"></div>
+
+        <div class="dial-area">
+            <div class="dial" id="dial">
+                <div class="indicator" aria-hidden="true"></div>
+                <div class="ring">
+                    <div class="hub">
+                        <div>
+                            <div class="display" id="display">00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <aside class="card sidebar">
+        <div style="flex-grow: 2">
+            <label for="rotations">Rotationen</label>
+            <textarea id="rotations"></textarea>
+        </div>
+
+        <div>
+            <label for="zeroCounterP1">Nullen (Part1)</label>
+            <input id="zeroCounterP1" type="text">
+        </div>
+
+        <div>
+            <label for="zeroCounterP2">Nullen (Part2)</label>
+            <input id="zeroCounterP2" type="text">
+        </div>
+
+        <div class="row">
+            <button id="execute">Ausführen</button>
+            <button id="reset">Zurücksetzen</button>
+        </div>
+
+    </aside>
+</div>
+
+<script>
+    const STEPS = 100
+    const DEG_PER = 360 / STEPS
+
+    const display = document.getElementById('display')
+    const dial = document.getElementById('dial')
+    const rotation = document.getElementById('rotation')
+    const rotations = document.getElementById('rotations')
+    const executeBtn = document.getElementById('execute')
+    const resetBtn = document.getElementById('reset')
+    const zeroCounterP1 = document.getElementById('zeroCounterP1')
+    const zeroCounterP2 = document.getElementById('zeroCounterP2')
+
+    let value = 0
+    let countZerosP1 = 0
+    let countZerosP2 = 0
+
+    function normalizeAngle(a) {
+        let r = a % 360
+        if (r < 0) r += 360
+        return r
+    }
+
+    function valueToAngle(v) {
+        return normalizeAngle(v * DEG_PER)
+    }
+
+    function setValue(v) {
+        if (value === 0) countZeroP2()
+        value = v
+        const angle = valueToAngle(value)
+        dial.style.transform = `rotate(${angle}deg)`
+        display.textContent = String(value).padStart(2, '0')
+    }
+
+    function countZeroP1() {
+        setZeroCounterP1(countZerosP1 + 1)
+    }
+
+    function setZeroCounterP1(v) {
+        countZerosP1 = v
+        zeroCounterP1.value = countZerosP1
+    }
+
+    function countZeroP2() {
+        setZeroCounterP2(countZerosP2 + 1)
+    }
+
+    function setZeroCounterP2(v) {
+        countZerosP2 = v
+        zeroCounterP2.value = countZerosP2
+    }
+
+    function inc() {
+        let v = (value + 1) % STEPS
+        setValue(v)
+    }
+
+    function dec() {
+        let v = (value - 1 + STEPS) % STEPS
+        setValue(v)
+    }
+
+    function resetAll() {
+        setValue(50)
+        setZeroCounterP1(0)
+        setZeroCounterP2(0)
+    }
+
+    async function executeRotations() {
+        const lines = rotations.value.split(/\r?\n/)
+
+        for (let l = 0; l < lines.length; l++) {
+            const line = lines[l];
+            rotation.innerText = line + " (" + (l + 1) + "/" + lines.length + ")"
+            const direction = line.charAt(0)
+            let count = line.substring(1)
+            let fullTurns = Math.floor(count / STEPS)
+            count = count % STEPS
+
+            setZeroCounterP2(countZerosP2 + fullTurns)
+
+            for (let i = 0; i < count; i++) {
+                if (direction === "L") dec()
+                else if (direction === "R") inc()
+
+                await sleep(1)
+            }
+
+            if (value === 0) countZeroP1()
+        }
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms))
+    }
+
+    executeBtn.addEventListener('click', executeRotations)
+    resetBtn.addEventListener('click', resetAll)
+
+    resetAll()
+</script>
+</body>
+</html>
