@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>AoC 2025 Tag 3</title>
+    <style>
+        :root {
+            --size: 360px;
+            --bg: #0f1724;
+            --card: #0b1220;
+            --accent: #ffd166;
+            --muted: #98a2b3;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            background: linear-gradient(180deg, #071024 0%, #081227 100%);
+            color: #e6eef8;
+            font-family: Inter, system-ui, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 920px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: inherit;
+            cursor: pointer
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 85vh;
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: transparent;
+            color: inherit
+        }
+
+        textarea#puzzle-input {
+            height: 96%;
+            resize: none;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px
+        }
+
+        @media (max-width: 900px) {
+            .wrap {
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <div class="card" id="output">
+
+    </div>
+
+    <aside class="card sidebar">
+        <div style="flex-grow: 2">
+            <label for="puzzle-input">Batterien</label>
+            <textarea id="puzzle-input"></textarea>
+        </div>
+
+        <div>
+            <label for="resultP1">Spannung (Part1)</label>
+            <input id="resultP1" type="text">
+        </div>
+
+        <div>
+            <label for="resultP2">Summe (Part2)</label>
+            <input id="resultP2" type="text">
+        </div>
+
+        <div class="row">
+            <button id="execute">Ausführen</button>
+            <button id="reset">Zurücksetzen</button>
+        </div>
+
+    </aside>
+</div>
+
+<script>
+    const puzzleInput  = document.getElementById('puzzle-input')
+    const executeBtn = document.getElementById('execute')
+    const resetBtn = document.getElementById('reset')
+    const resultP1El = document.getElementById('resultP1')
+    const resultP2El = document.getElementById('resultP2')
+    const output  = document.getElementById('output')
+
+    let resultP1;
+    let resultP2;
+
+    function setResultP1(value) {
+        resultP1 = value
+        resultP1El.value = resultP1
+    }
+
+    function setResultP2(value) {
+        resultP2 = value
+        resultP2El.value = resultP2
+    }
+
+    function resetAll() {
+        setResultP1(0)
+        setResultP2(0)
+        puzzleInput.value = '987654321111111\n' +
+            '811111111111119\n' +
+            '234234234234278\n' +
+            '818181911112111'
+        output.textContent = ''
+    }
+
+    async function execute() {
+        const lines = puzzleInput.value.split(/\r?\n/)
+        let sumP1 = 0
+        let sumP2 = 0
+
+        for (const line of lines) {
+            let numberP1 = maxNumberFromDigits(line, 2)
+            let numberP2 = maxNumberFromDigits(line, 12)
+
+            let resultLine = document.createElement("div")
+            resultLine.textContent = line + ' [P1: ' + numberP1 + '] [P2: ' + numberP2 + ']'
+            output.appendChild(resultLine)
+
+            sumP1 += Number(numberP1)
+            sumP2 += Number(numberP2)
+        }
+
+        setResultP1(sumP1)
+        setResultP2(sumP2)
+    }
+
+    function maxNumberFromDigits(digits, amount) {
+        let removeCount = digits.length - amount;
+        const stack = [];
+
+        for (let digit of digits) {
+            while (
+                removeCount > 0 &&
+                stack.length > 0 &&
+                stack[stack.length - 1] < digit
+                ) {
+                stack.pop();
+                removeCount--;
+            }
+            stack.push(digit);
+        }
+
+        return stack.slice(0, amount).join('');
+    }
+
+
+    executeBtn.addEventListener('click', execute)
+    resetBtn.addEventListener('click', resetAll)
+
+    resetAll()
+</script>
+</body>
+</html>
