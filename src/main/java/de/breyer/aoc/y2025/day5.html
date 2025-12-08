@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>AoC 2025 Tag 5</title>
+    <style>
+        :root {
+            --size: 360px;
+            --bg: #0f1724;
+            --card: #0b1220;
+            --accent: #ffd166;
+            --muted: #98a2b3;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            background: linear-gradient(180deg, #071024 0%, #081227 100%);
+            color: #e6eef8;
+            font-family: Inter, system-ui, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px
+        }
+
+        .wrap {
+            width: 95vw;
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+            height: 85vh;
+            flex-grow: 1;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: inherit;
+            cursor: pointer
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: transparent;
+            color: inherit
+        }
+
+        textarea {
+            height: 100%;
+            resize: none;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px
+        }
+
+        @media (max-width: 900px) {
+            .wrap {
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <div class="card" id="output-container">
+        <textarea id="output" readonly></textarea>
+    </div>
+
+    <div class="card sidebar">
+        <div style="flex-grow: 2">
+            <label for="puzzle-input">Input</label>
+            <textarea id="puzzle-input"></textarea>
+        </div>
+
+        <div>
+            <label for="resultP1">Ergebnis (Part1)</label>
+            <input id="resultP1" type="text">
+        </div>
+
+        <div>
+            <label for="resultP2">Ergebnis (Part2)</label>
+            <input id="resultP2" type="text">
+        </div>
+
+        <div class="row">
+            <button id="execute">Ausführen</button>
+            <button id="reset">Zurücksetzen</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const puzzleInput = document.getElementById('puzzle-input')
+    const executeBtn = document.getElementById('execute')
+    const resetBtn = document.getElementById('reset')
+    const resultP1El = document.getElementById('resultP1')
+    const resultP2El = document.getElementById('resultP2')
+    const output = document.getElementById('output')
+
+    let resultP1;
+    let resultP2;
+
+    function setResultP1(value) {
+        resultP1 = value
+        resultP1El.value = resultP1
+    }
+
+    function setResultP2(value) {
+        resultP2 = value
+        resultP2El.value = resultP2
+    }
+
+    function resetAll() {
+        setResultP1(0)
+        setResultP2(0)
+        puzzleInput.value = '3-5\n' +
+            '10-14\n' +
+            '16-20\n' +
+            '12-18\n' +
+            '\n' +
+            '1\n' +
+            '5\n' +
+            '8\n' +
+            '11\n' +
+            '17\n' +
+            '32'
+        output.value = ''
+    }
+
+    async function execute() {
+        let lines = puzzleInput.value.split(/\r?\n/)
+        const ranges = []
+        const ids = []
+        let emptyLineCrossed = false
+
+        for (let i = 0; i < lines.length; i++) {
+            if (lines[i].length === 0) {
+                emptyLineCrossed = true
+                continue
+            }
+
+            if (emptyLineCrossed) {
+                ids.push(Number(lines[i]))
+            } else {
+                const split = lines[i].split('-')
+                ranges.push({ start: Number(split[0]), end: Number(split[1]) })
+            }
+        }
+
+        let count = 0
+
+        for (const id of ids) {
+            for (const range of ranges) {
+                if (id >= range.start && id <= range.end) {
+                    count++
+                    output.value += id + '\n'
+                    break
+                }
+            }
+        }
+
+        setResultP1(count)
+
+        for (let i = 0; i < ranges.length - 1; i++) {
+            for (let j = i + 1; j < ranges.length; j++) {
+                if (ranges[j].start >= ranges[i].start && ranges[j].start <= ranges[i].end) {
+                    ranges[i].end = Math.max(ranges[i].end, ranges[j].end)
+                    ranges.splice(j, 1)
+                    j = i
+                } else if (ranges[j].end >= ranges[i].start && ranges[j].end <= ranges[i].end) {
+                    ranges[i].start = Math.min(ranges[i].start, ranges[j].start)
+                    ranges.splice(j, 1)
+                    j = i
+                } else if (ranges[j].start < ranges[i].start && ranges[j].end > ranges[i].end) {
+                    ranges[i].start = ranges[j].start
+                    ranges[i].end = ranges[j].end
+                    ranges.splice(j, 1)
+                    j = i
+                }
+            }
+        }
+
+        console.log(ranges)
+
+        count = 0
+
+        for (const range of ranges) {
+            count += range.end - range.start + 1
+        }
+
+        setResultP2(count)
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms))
+    }
+
+    executeBtn.addEventListener('click', execute)
+    resetBtn.addEventListener('click', resetAll)
+
+    resetAll()
+</script>
+</body>
+</html>
