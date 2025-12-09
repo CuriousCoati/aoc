@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>AoC 2025 Tag 8</title>
+    <style>
+        :root {
+            --size: 360px;
+            --bg: #0f1724;
+            --card: #0b1220;
+            --accent: #ffd166;
+            --muted: #98a2b3;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            background: linear-gradient(180deg, #071024 0%, #081227 100%);
+            color: #e6eef8;
+            font-family: Inter, system-ui, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px
+        }
+
+        .wrap {
+            width: 95vw;
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+            height: 85vh;
+            flex-grow: 1;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: inherit;
+            cursor: pointer
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: transparent;
+            color: inherit
+        }
+
+        textarea {
+            height: 100%;
+            resize: none;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px
+        }
+
+        @media (max-width: 900px) {
+            .wrap {
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <div class="card" id="output-container">
+        <textarea id="output" readonly></textarea>
+    </div>
+
+    <div class="card sidebar">
+        <div style="flex-grow: 2">
+            <label for="puzzle-input">Input</label>
+            <textarea id="puzzle-input"></textarea>
+        </div>
+
+        <div>
+            <label for="resultP1">Ergebnis (Part1)</label>
+            <input id="resultP1" type="text">
+        </div>
+
+        <div>
+            <label for="resultP2">Ergebnis (Part2)</label>
+            <input id="resultP2" type="text">
+        </div>
+
+        <div class="row">
+            <button id="execute">Ausführen</button>
+            <button id="reset">Zurücksetzen</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const puzzleInput = document.getElementById('puzzle-input')
+    const executeBtn = document.getElementById('execute')
+    const resetBtn = document.getElementById('reset')
+    const resultP1El = document.getElementById('resultP1')
+    const resultP2El = document.getElementById('resultP2')
+    const output = document.getElementById('output')
+
+    let resultP1;
+    let resultP2;
+
+    function setResultP1(value) {
+        resultP1 = value
+        resultP1El.value = resultP1
+    }
+
+    function setResultP2(value) {
+        resultP2 = value
+        resultP2El.value = resultP2
+    }
+
+    function resetAll() {
+        prepareExecution()
+        puzzleInput.value = '162,817,812\n' +
+            '57,618,57\n' +
+            '906,360,560\n' +
+            '592,479,940\n' +
+            '352,342,300\n' +
+            '466,668,158\n' +
+            '542,29,236\n' +
+            '431,825,988\n' +
+            '739,650,466\n' +
+            '52,470,668\n' +
+            '216,146,977\n' +
+            '819,987,18\n' +
+            '117,168,530\n' +
+            '805,96,715\n' +
+            '346,949,466\n' +
+            '970,615,88\n' +
+            '941,993,340\n' +
+            '862,61,35\n' +
+            '984,92,344\n' +
+            '425,690,689'
+    }
+
+    function prepareExecution() {
+        setResultP1(0)
+        setResultP2(0)
+        output.value = ''
+    }
+
+    async function execute() {
+        prepareExecution()
+        const lines = puzzleInput.value.split(/\r?\n/)
+        const junctionBoxes = []
+
+        for (const line of lines) {
+            const split = line.split(',')
+            junctionBoxes.push({ x: split[0], y: split[1], z: split[2], circuit: undefined})
+        }
+
+        const sortedByDistance = []
+
+        for (let i = 0; i < junctionBoxes.length - 1; i++) {
+            for (let j = i + 1; j < junctionBoxes.length; j++) {
+                const distance = euclidDistance(junctionBoxes[i], junctionBoxes[j])
+                sortedByDistance.push({indexP1: i, indexP2: j, distance: distance})
+            }
+        }
+
+        sortedByDistance.sort((a, b) => a.distance - b.distance)
+
+        const maxConnection = junctionBoxes.length === 20 ? 10 : 1000
+        let connectionCount = 0
+        let circuitCount = 0
+        let index = 0
+        const circuitMap = new Map()
+        let junctionBox1 = undefined
+        let junctionBox2 = undefined
+
+        while (junctionBoxes.some(jb => jb.circuit === undefined)) {
+            const connection = sortedByDistance[index]
+            junctionBox1 = junctionBoxes[connection.indexP1]
+            junctionBox2 = junctionBoxes[connection.indexP2]
+
+            output.value += displayJunctionBox(junctionBox1) + ' -> ' + displayJunctionBox(junctionBox2) + ' [' + connection.distance + ']\n'
+
+            const circuit1 = junctionBox1.circuit
+            const circuit2 = junctionBox2.circuit
+
+            if (circuit1 === undefined && circuit2 === undefined) {
+                const circuit = ++circuitCount
+                junctionBox1.circuit = circuit
+                junctionBox2.circuit = circuit
+
+                circuitMap.set(circuit, [connection.indexP1, connection.indexP2])
+            } else if (circuit1 && circuit2 === undefined) {
+                junctionBox2.circuit = circuit1
+                circuitMap.get(circuit1).push(connection.indexP2)
+            } else if (circuit1 === undefined && circuit2) {
+                junctionBox1.circuit = circuit2
+                circuitMap.get(circuit2).push(connection.indexP1)
+            } else if (circuit1 !== circuit2) {
+                const oldCircuit = circuitMap.get(circuit2)
+                for (const oldCircuitElement of oldCircuit) {
+                    circuitMap.get(circuit1).push(oldCircuitElement)
+                    junctionBoxes[oldCircuitElement].circuit = circuit1
+                }
+                circuitMap.delete(circuit2)
+            }
+
+            connectionCount++
+            index++
+
+            if (maxConnection === connectionCount) {
+                const productTop3 = [...circuitMap.values()]
+                    .sort((a, b) => b.length - a.length)
+                    .slice(0, 3)
+                    .map(arr => arr.length)
+                    .reduce((a, b) => a * b)
+
+                setResultP1(productTop3)
+            }
+        }
+
+        setResultP2(junctionBox1.x * junctionBox2.x)
+    }
+
+    function displayJunctionBox(junctionBox) {
+        return junctionBox.x + "," + junctionBox.y + "," + junctionBox.z
+    }
+
+    function euclidDistance(junctionBox1, junctionBox2) {
+        const x = junctionBox2.x - junctionBox1.x
+        const y = junctionBox2.y - junctionBox1.y
+        const z = junctionBox2.z - junctionBox1.z
+        return Math.hypot(x, y, z)
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms))
+    }
+
+    executeBtn.addEventListener('click', execute)
+    resetBtn.addEventListener('click', resetAll)
+
+    resetAll()
+</script>
+</body>
+</html>
