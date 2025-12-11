@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>AoC 2025 Tag 11</title>
+    <style>
+        :root {
+            --size: 360px;
+            --bg: #0f1724;
+            --card: #0b1220;
+            --accent: #ffd166;
+            --muted: #98a2b3;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            background: linear-gradient(180deg, #071024 0%, #081227 100%);
+            color: #e6eef8;
+            font-family: Inter, system-ui, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px
+        }
+
+        .wrap {
+            width: 95vw;
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+            height: 85vh;
+            flex-grow: 1;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: inherit;
+            cursor: pointer
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: transparent;
+            color: inherit
+        }
+
+        textarea {
+            height: 100%;
+            resize: none;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px
+        }
+
+        @media (max-width: 900px) {
+            .wrap {
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <div class="card" id="output-container">
+        <textarea id="output" readonly></textarea>
+    </div>
+
+    <div class="card sidebar">
+        <div style="flex-grow: 2">
+            <label for="puzzle-input">Input</label>
+            <textarea id="puzzle-input"></textarea>
+        </div>
+
+        <div>
+            <label for="resultP1">Ergebnis (Part1)</label>
+            <input id="resultP1" type="text">
+        </div>
+
+        <div>
+            <label for="resultP2">Ergebnis (Part2)</label>
+            <input id="resultP2" type="text">
+        </div>
+
+        <div class="row">
+            <button id="execute">Ausführen</button>
+            <button id="reset">Zurücksetzen</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const puzzleInput = document.getElementById('puzzle-input')
+    const executeBtn = document.getElementById('execute')
+    const resetBtn = document.getElementById('reset')
+    const resultP1El = document.getElementById('resultP1')
+    const resultP2El = document.getElementById('resultP2')
+    const output = document.getElementById('output')
+
+    let resultP1
+    let resultP2
+    let bestCost
+    let bestSolution
+    let buttons
+
+    function setResultP1(value) {
+        resultP1 = value
+        resultP1El.value = resultP1
+    }
+
+    function setResultP2(value) {
+        resultP2 = value
+        resultP2El.value = resultP2
+    }
+
+    function resetAll() {
+        prepareExecution()
+        puzzleInput.value = 'you: bbb ccc\n' +
+            'svr: aaa bbb\n' +
+            'aaa: fft\n' +
+            'fft: ccc\n' +
+            'bbb: tty\n' +
+            'tty: ccc\n' +
+            'ccc: ddd eee\n' +
+            'ddd: hub\n' +
+            'hub: fff\n' +
+            'eee: dac\n' +
+            'dac: fff\n' +
+            'fff: ggg hhh\n' +
+            'ggg: out\n' +
+            'hhh: out'
+    }
+
+    function prepareExecution() {
+        setResultP1(0)
+        setResultP2(0)
+        output.value = ''
+    }
+
+    async function execute() {
+        prepareExecution()
+        const lines = puzzleInput.value.split(/\r?\n/)
+        const devices = new Map()
+
+        for (const line of lines) {
+            const lineSplit = line.split(': ')
+            const outputs = []
+            lineSplit[1].split(' ').forEach((o) => outputs.push(o))
+
+            devices.set(lineSplit[0], outputs)
+        }
+
+        let stack = []
+        stack.push('you')
+        let counter = 0
+
+        while (stack.length > 0) {
+            const device = stack.pop()
+            const outputs = devices.get(device)
+
+            for (const o of outputs) {
+                if (o === 'out') {
+                    counter++
+                } else {
+                    stack.push(o)
+                }
+            }
+        }
+
+        setResultP1(counter)
+
+        await sleep(100)
+
+
+        setResultP2(dfs(devices, new Map(), 'svr', false, false, new Set()))
+    }
+
+    function dfs(devices, memo, current, haveDAC, haveFFT, visited) {
+        const key = `${current}|${haveDAC}|${haveFFT}`;
+        if (memo.has(key)) return memo.get(key);
+
+        visited.add(current);
+        let total = 0;
+
+        for (const o of devices.get(current)) {
+            if (o === 'out') {
+                if (haveDAC && haveFFT) total++;
+            } else if (!visited.has(o)) {
+                total += dfs(
+                    devices,
+                    memo,
+                    o,
+                    haveDAC || (o === 'dac'),
+                    haveFFT || (o === 'fft'),
+                    new Set(visited)
+                );
+            }
+        }
+
+        memo.set(key, total);
+        return total;
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms))
+    }
+
+    executeBtn.addEventListener('click', execute)
+    resetBtn.addEventListener('click', resetAll)
+
+    resetAll()
+</script>
+</body>
+</html>
